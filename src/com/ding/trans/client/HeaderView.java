@@ -40,6 +40,19 @@ public class HeaderView {
         passwordField = new PasswordField();
         loginBox.getChildren().add(passwordField);
 
+        if (Config.getBoolean("AutoFillLogin")) {
+            String v = Config.getValue("UserName");
+            if (v != null && !v.isEmpty()) {
+                String userName = ClientUtil.decipherSimply(v);
+                usernameField.setText(userName);
+            }
+            v = Config.getValue("Password");
+            if (v != null && !v.isEmpty()) {
+                String password = ClientUtil.decipherSimply(v);
+                passwordField.setText(password);
+            }
+        }
+
         loginBtn = new Button("登录");
         loginBox.getChildren().add(loginBtn);
 

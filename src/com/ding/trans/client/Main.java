@@ -17,6 +17,8 @@ public class Main extends Application {
 
     private static HeaderView headerView;
 
+    private static ContentView contentView;
+
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
@@ -24,6 +26,8 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         headerView = new HeaderView();
         root.setTop(headerView.getView());
+        contentView = new ContentView();
+        root.setCenter(contentView.getView());
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(CSS);
@@ -37,6 +41,10 @@ public class Main extends Application {
     public static void main(String[] args) {
         new File(Config.getApplicationDataDir()).mkdirs();
         launch(args);
+    }
+
+    public static ContentView getContentView() {
+        return contentView;
     }
 
     public static double getScreenWidth() {

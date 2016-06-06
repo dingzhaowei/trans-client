@@ -50,13 +50,6 @@
   -fx-padding: 10.0;
 }
 
-.header-title {
-  -fx-padding: 5.0, 0.0, 0.0, 0.0;
-  /*-fx-font-weight: bold;*/
-  -fx-font-size: 24.0;
-  -fx-text-fill: black;
-}
-
 .header-login {
   -fx-padding: 5.0, 0.0, 0.0, 0.0;
   -fx-spacing: 5.0;
@@ -86,15 +79,6 @@
   -fx-border-insets: 5.0;
 }
 
-.content-center-split {
-  -fx-box-border: transparent;
-}
-
-.content-center-split .split-pane-divider {
-  -fx-background-color: white;
-  -fx-padding: 0.0 1.0 0.0 1.0;
-}
-
 .content-center-tabpane {
 	-fx-background-color: whitesmoke;
 }
@@ -103,17 +87,6 @@
   -fx-padding: 0.0;
   -fx-border-width: 0.0;
   -fx-background-insets: 0.0;
-}
-
-.content-left-layout {
-  -fx-border-color: lightblue;
-  -fx-border-style: dotted;
-  -fx-border-insets: 5.0;
-}
-
-.content-left-treeview {
-  -fx-font-size: 12.0;
-  -fx-box-border: transparent;
 }
 
 .content-right-layout {
@@ -165,21 +138,6 @@
   -fx-border-insets: 1.0;
 }
 
-.notif-unread {
-  -fx-font-weight: bold;
-  -fx-border-color: lightblue;
-  -fx-border-width: 2.0;
-  -fx-border-style: dotted;
-  -fx-border-radius: 5.0;
-}
-
-.notif-read {
-  -fx-text-fill: gray;
-  -fx-border-color: gray;
-  -fx-border-style: dotted;
-  -fx-border-radius: 5.0;
-}
-
 .background-white {
   -fx-background-color: white;
 }
@@ -190,14 +148,4 @@
 
 .background-lightblue {
   -fx-background-color: lightblue;
-}
-
-.login-success .table-cell {
-  -fx-text-fill: green;
-  -fx-font-weight: bold;
-}
-
-.login-failure .table-cell {
-  -fx-text-fill: red;
-  -fx-font-weight: bold;
 }

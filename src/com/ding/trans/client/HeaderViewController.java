@@ -46,6 +46,7 @@ public class HeaderViewController {
             view.loginBox.setVisible(false);
             view.logoutBox.setVisible(true);
             view.logoutBtn.requestFocus();
+            Main.getContentView().init();
         }, "登录成功！", view.loginBtn, loading);
         ClientUtil.onAsyncTaskFailure(task, null, view.loginBtn, loading);
         ClientUtil.runAsyncTask(task);
@@ -63,6 +64,7 @@ public class HeaderViewController {
             view.loginBox.setVisible(true);
             view.loginBox.requestFocus();
             view.usernameField.requestFocus();
+            Main.getContentView().clear();
         }, "退出登录成功！", view.logoutBtn, loading);
         ClientUtil.onAsyncTaskFailure(task, null, view.logoutBtn, loading);
         ClientUtil.runAsyncTask(task);

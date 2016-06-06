@@ -1,6 +1,7 @@
 package com.ding.trans.client;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.ConnectException;
 import java.net.HttpCookie;
 import java.net.URLDecoder;
@@ -26,6 +27,10 @@ import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.ding.trans.client.model.TransOrder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 public class RemoteDriver {
 
     public static final int DEFAULT_CONNECT_TIMEOUT = 15000;
@@ -40,13 +45,17 @@ public class RemoteDriver {
 
     private String remoteUrl;
 
+    private Gson gson;
+
     private AtomicBoolean logined;
 
     private Map<String, String> cookies;
 
     private RemoteDriver() {
-        this.logined = new AtomicBoolean();
-        this.cookies = new HashMap<>();
+        gson = new Gson();
+        logined = new AtomicBoolean();
+        cookies = new HashMap<>();
+
         if (System.getProperty("debug") != null) {
             this.remoteUrl = "http://localhost:18020";
         } else {
@@ -70,7 +79,7 @@ public class RemoteDriver {
         request(httpClient, "/login", params, resp -> {
             storeCookies(resp);
             logined.set(true);
-        } , "登录失败");
+        }, "登录失败");
     }
 
     public void logout() throws RemoteDriverException {
@@ -79,7 +88,23 @@ public class RemoteDriver {
         request(httpClient, "/logout", params, resp -> {
             logined.set(false);
             clearCookies();
-        } , "退出失败");
+        }, "退出失败");
+    }
+
+    public List<TransOrder> fetchTransOrders() throws RemoteDriverException {
+        List<TransOrder> orders = new ArrayList<>();
+        CloseableHttpClient httpClient = buildClient();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("action", "get"));
+        request(httpClient, "/transOrder", params, resp -> {
+            String result = EntityUtils.toString(resp.getEntity());
+            result = ClientUtil.decompress(result);
+            Type type = new TypeToken<List<Map<String, Object>>>() {
+            }.getType();
+            List<Map<String, Object>> l = gson.fromJson(result, type);
+            l.forEach(e -> orders.add(TransOrder.valueOf(e)));
+        }, "获取运单失败");
+        return orders;
     }
 
     private CloseableHttpClient buildClient() {

@@ -9,19 +9,42 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToolBar;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
 public class ContentView {
+
+    WebView orderDetailView;
+
+    Button addOneTransOrderBtn;
+
+    Button addManyTransOrderBtn;
+
+    Button commentTransOrderBtn;
+
+    Button payFreightBtn;
+
+    Button payTaxBtn;
+
+    Button deleteTransOrderBtn;
+
+    Button modifyShipAddressBtn;
 
     // 待入库
     Tab drkOrdersTab;
@@ -86,7 +109,69 @@ public class ContentView {
         VBox.setVgrow(centerTabPane, Priority.ALWAYS);
         centerLayout.getStyleClass().add("content-center-layout");
 
+        ImageView icon1 = ClientUtil.createIcon("add-one.png", 24);
+        addOneTransOrderBtn = ClientUtil.createImageButton(icon1);
+        addOneTransOrderBtn.setPadding(new Insets(0));
+        addOneTransOrderBtn.setDisable(true);
+
+        ImageView icon2 = ClientUtil.createIcon("add-many.png", 24);
+        addManyTransOrderBtn = ClientUtil.createImageButton(icon2);
+        addManyTransOrderBtn.setPadding(new Insets(0));
+        addManyTransOrderBtn.setDisable(true);
+
+        ImageView icon3 = ClientUtil.createIcon("remark.png", 24);
+        commentTransOrderBtn = ClientUtil.createImageButton(icon3);
+        commentTransOrderBtn.setPadding(new Insets(0));
+        commentTransOrderBtn.setDisable(true);
+
+        ImageView icon4 = ClientUtil.createIcon("freight.png", 24);
+        payFreightBtn = ClientUtil.createImageButton(icon4);
+        payFreightBtn.setPadding(new Insets(0));
+        payFreightBtn.setDisable(true);
+
+        ImageView icon5 = ClientUtil.createIcon("taxation.png", 24);
+        payTaxBtn = ClientUtil.createImageButton(icon5);
+        payTaxBtn.setPadding(new Insets(0));
+        payTaxBtn.setDisable(true);
+
+        ImageView icon6 = ClientUtil.createIcon("address.png", 24);
+        modifyShipAddressBtn = ClientUtil.createImageButton(icon6);
+        modifyShipAddressBtn.setPadding(new Insets(0));
+        modifyShipAddressBtn.setDisable(true);
+
+        ImageView icon7 = ClientUtil.createIcon("delete.png", 24);
+        deleteTransOrderBtn = ClientUtil.createImageButton(icon7);
+        deleteTransOrderBtn.setPadding(new Insets(0));
+        deleteTransOrderBtn.setDisable(true);
+
+        ToolBar toolBar = new ToolBar();
+        toolBar.setMaxWidth(250.0);
+        toolBar.getItems().add(addOneTransOrderBtn);
+        toolBar.getItems().add(new Separator(Orientation.VERTICAL));
+        toolBar.getItems().add(addManyTransOrderBtn);
+        toolBar.getItems().add(new Separator(Orientation.VERTICAL));
+        toolBar.getItems().add(commentTransOrderBtn);
+        toolBar.getItems().add(new Separator(Orientation.VERTICAL));
+        toolBar.getItems().add(payFreightBtn);
+        toolBar.getItems().add(new Separator(Orientation.VERTICAL));
+        toolBar.getItems().add(payTaxBtn);
+        toolBar.getItems().add(new Separator(Orientation.VERTICAL));
+        toolBar.getItems().add(deleteTransOrderBtn);
+        toolBar.getItems().add(new Separator(Orientation.VERTICAL));
+        toolBar.getItems().add(modifyShipAddressBtn);
+
+        orderDetailView = new WebView();
+        orderDetailView.maxWidthProperty().bind(toolBar.widthProperty());
+
+        VBox rightLayout = new VBox();
+        rightLayout.setSpacing(5);
+        rightLayout.getChildren().add(toolBar);
+        rightLayout.getChildren().add(orderDetailView);
+        VBox.setVgrow(orderDetailView, Priority.ALWAYS);
+        rightLayout.getStyleClass().add("content-right-layout");
+
         layout.setCenter(centerLayout);
+        layout.setRight(rightLayout);
         new ContentViewController(this).bind();
     }
 

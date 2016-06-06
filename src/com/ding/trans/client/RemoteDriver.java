@@ -28,6 +28,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import com.ding.trans.client.model.TransOrder;
+import com.ding.trans.client.model.TransOrderDetail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -95,7 +96,7 @@ public class RemoteDriver {
         List<TransOrder> orders = new ArrayList<>();
         CloseableHttpClient httpClient = buildClient();
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("action", "get"));
+        params.add(new BasicNameValuePair("action", "getOrders"));
         request(httpClient, "/transOrder", params, resp -> {
             String result = EntityUtils.toString(resp.getEntity());
             result = ClientUtil.decompress(result);
@@ -105,6 +106,20 @@ public class RemoteDriver {
             l.forEach(e -> orders.add(TransOrder.valueOf(e)));
         }, "获取运单失败");
         return orders;
+    }
+
+    public TransOrderDetail fetchTransOrderDetail(String orderNo) throws RemoteDriverException {
+        TransOrderDetail orderDetail = new TransOrderDetail();
+        CloseableHttpClient httpClient = buildClient();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("action", "getDetail"));
+        request(httpClient, "/transOrder", params, resp -> {
+            String result = EntityUtils.toString(resp.getEntity());
+            result = ClientUtil.decompress(result);
+            TransOrderDetail d = gson.fromJson(result, TransOrder.class);
+            orderDetail.setFormattedDetail(d.getFormattedDetail());
+        }, "获取详情失败");
+        return orderDetail;
     }
 
     private CloseableHttpClient buildClient() {

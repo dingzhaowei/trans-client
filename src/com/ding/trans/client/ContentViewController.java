@@ -21,13 +21,15 @@ public class ContentViewController {
     public void bind() {
         ChangeListener<TransOrder> orderSelChangeListener = (ob, ov, nv) -> {
             if (nv != null) {
-                String orderNo = nv.getOrderNo();
+                String transId = nv.getTransId();
                 Window loading = Main.showLoadingMsg();
                 Task<TransOrderDetail> task = ClientUtil.createAsyncTask(() -> {
-                    return driver.fetchTransOrderDetail(orderNo);
+                    return driver.fetchTransOrderDetail(transId);
                 });
                 ClientUtil.onAsyncTaskSuccess(task, () -> {
-
+                    TransOrderDetail detail = task.getValue();
+                    String formattedDetail = detail.getFormattedDetail();
+                    view.orderDetailView.getEngine().loadContent(formattedDetail);
                 }, null, loading);
                 ClientUtil.onAsyncTaskFailure(task, null, loading);
                 ClientUtil.runAsyncTask(task);

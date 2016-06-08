@@ -108,15 +108,16 @@ public class RemoteDriver {
         return orders;
     }
 
-    public TransOrderDetail fetchTransOrderDetail(String orderNo) throws RemoteDriverException {
+    public TransOrderDetail fetchTransOrderDetail(String transId) throws RemoteDriverException {
         TransOrderDetail orderDetail = new TransOrderDetail();
         CloseableHttpClient httpClient = buildClient();
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("action", "getDetail"));
+        params.add(new BasicNameValuePair("transId", transId));
         request(httpClient, "/transOrder", params, resp -> {
             String result = EntityUtils.toString(resp.getEntity());
             result = ClientUtil.decompress(result);
-            TransOrderDetail d = gson.fromJson(result, TransOrder.class);
+            TransOrderDetail d = gson.fromJson(result, TransOrderDetail.class);
             orderDetail.setFormattedDetail(d.getFormattedDetail());
         }, "获取详情失败");
         return orderDetail;

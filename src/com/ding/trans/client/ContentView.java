@@ -217,7 +217,9 @@ public class ContentView {
                             m.get("DRK").add(order);
                         } else if (orderStatus.contains("待付款")) {
                             m.get("DFK").add(order);
-                        } else if (orderStatus.contains("待签收")) {
+                        } else if (orderStatus.contains("待出库")) {
+                            m.get("DQS").add(order);
+                        } else if (orderStatus.contains("派送中")) {
                             m.get("DQS").add(order);
                         } else if (orderStatus.contains("已签收")) {
                             m.get("YQS").add(order);
